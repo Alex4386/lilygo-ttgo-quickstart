@@ -64,6 +64,5 @@ With awesome tool developed by **[@me-no-dev](https://github.com/me-no-dev)**, Y
 Create `./data/` from your sketch directory.  
 The content of `./data/` will be flashed when you use the upload tool from `tools - ESP32 Sketch Data Upload`.  
   
-**TIP:** `If you can't find your sketch directory, it is usually subdirectory of Arduino workspace`
-   - On Windows, It is `%userprofile%\Documents\Arduino`
-   - On macOS/\*NIX, It is `~/Documents/Arduino`
+**TIP:** You can open sketch directory using `Sketch - View Sketch Folder`
+   Shortcut `Ctrl-K` or `Cmd-K` would work.
