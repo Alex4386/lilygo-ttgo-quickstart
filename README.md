@@ -25,7 +25,7 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
 7. Done!
 
 ## (Optional) Install TFT_eSPI Library
-In order to use display of TTGO, It is recommended to use [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI). A performance optimized TFT driver library developed by @Bodmer.
+In order to use display of TTGO, It is recommended to use [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI). A performance optimized TFT driver library developed by **[@Bodmer](https://github.com/Bodmer)**.
 You can install it via `Library Manager`.  
 
 ### Installation
@@ -47,7 +47,7 @@ You can install it via `Library Manager`.
 ## (Optional) ESP32 Filesystem Uploader
 With Arduino ESP32 Filesystem uploader, you can easily upload files to ESP32 internal flash memory.  
 Depending on your version of ESP32, You might have 4MB or 16MB of memory on board.
-With awesome tool developed by @me-no-dev, You can now easily upload files to esp32 in no time.
+With awesome tool developed by **[@me-no-dev](https://github.com/me-no-dev)**, You can now easily upload files to esp32 in no time.
 
 1. Head to [ESP32FS Plugin Repository on GitHub](https://github.com/me-no-dev/arduino-esp32fs-plugin)
 2. Go to Releases
