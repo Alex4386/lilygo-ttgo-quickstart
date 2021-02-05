@@ -25,7 +25,7 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
 7. Done!
 
 ## (Optional) Install TFT_eSPI Library
-In order to use display of TTGO, It is recommended to use [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI). A performance optimized TFT driver library developed by **[@Bodmer](https://github.com/Bodmer)**.
+In order to use display (240x135) of TTGO, It is recommended to use [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI). A performance optimized TFT driver library developed by **[@Bodmer](https://github.com/Bodmer)**.
 You can install it via `Library Manager`.  
 
 ### Installation
@@ -68,3 +68,30 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
   
 **TIP:** You can open sketch directory using `Sketch - View Sketch Folder`  
      Shortcut `Ctrl-K` or `Cmd-K` would work.
+
+## Use Visual Studio Code instead.
+1. [Install Visual Studio Code](https://code.visualstudio.com) (if you didn't).
+2. Install [Arduino Extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.vscode-arduino) from Extensions MarketPlace.
+3. Open up Command Palette and type `Arduino: Initialize`
+4. Edit your c_cpp_properties.json by following [related issue](https://github.com/Microsoft/vscode-arduino/issues/678#issuecomment-662230997)
+   1. Set C/C++ Language Server use Arduino GCC
+   ```json
+   {
+      "configurations": [
+         {
+            "compilerPath": "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-gcc.exe",
+            "intelliSenseMode": "gcc-x86",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+         }
+      ]
+   }
+   ```
+   2. Add this to your workspace settings.json 
+   ```json
+      {
+          "C_Cpp.default.intelliSenseMode": "gcc-x86",
+          "C_Cpp.intelliSenseEngine": "Tag Parser"
+      }
+   ```
+5. Install [ESP8266FS Extension](https://marketplace.visualstudio.com/items?itemName=kash4kev.vscode-esp8266fs) from Extensions MarketPlace.  
