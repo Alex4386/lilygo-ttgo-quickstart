@@ -72,8 +72,11 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 ## Use Visual Studio Code instead.
 1. [Install Visual Studio Code](https://code.visualstudio.com) (if you didn't).
 2. Install [Arduino Extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.vscode-arduino) from Extensions MarketPlace.
-3. Open up Command Palette and type `Arduino: Initialize`
-4. Edit your c_cpp_properties.json by following [related issue](https://github.com/Microsoft/vscode-arduino/issues/678#issuecomment-662230997)
+3. Install [ESP8266FS Extension](https://marketplace.visualstudio.com/items?itemName=kash4kev.vscode-esp8266fs) from Extensions MarketPlace.  
+4. Open up Command Palette and type `Arduino: Initialize`
+
+### Windows
+5. Edit your c_cpp_properties.json by following [related issue](https://github.com/Microsoft/vscode-arduino/issues/678#issuecomment-662230997)
    1. Set C/C++ Language Server use Arduino GCC
    ```json
    {
@@ -94,4 +97,11 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
           "C_Cpp.intelliSenseEngine": "Tag Parser"
       }
    ```
-5. Install [ESP8266FS Extension](https://marketplace.visualstudio.com/items?itemName=kash4kev.vscode-esp8266fs) from Extensions MarketPlace.  
+
+### macOS
+5. Run `./generate_properties.macOS.sh`.
+6. (Big Sur Only) Update `pyserial` to latest version. [Issue](https://github.com/espressif/esptool/issues/540#issuecomment-741168660)
+   `pip install -U pyserial && pip3 install -U pyserial`
+7. (Big Sur Only) If problem persists, Do the following:
+   1. Use the dev channel version of ESP32 Library at [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json).  
+   **MAKE SURE YOU RE-RUN THE `./generate_properties.macOS.sh` AFTER UPDATE.** [Issue](https://github.com/espressif/esptool/issues/540#issuecomment-747185562)
