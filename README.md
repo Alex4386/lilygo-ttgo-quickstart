@@ -46,7 +46,8 @@ You can install it via `Library Manager`.
 
 ## (Optional) ESP32 Filesystem Uploader
 With Arduino ESP32 Filesystem uploader, you can easily upload files to ESP32 internal flash memory.  
-Depending on your version of ESP32, You might have 4MB or 16MB of memory on board.
+Depending on your version of ESP32, You might have 4MB or 16MB of memory on board.  
+  
 With awesome tool developed by **[@me-no-dev](https://github.com/me-no-dev)**, You can now easily upload files to esp32 in no time.
 
 1. Head to [ESP32FS Plugin Repository on GitHub](https://github.com/me-no-dev/arduino-esp32fs-plugin)
@@ -63,6 +64,7 @@ With awesome tool developed by **[@me-no-dev](https://github.com/me-no-dev)**, Y
 ### How to use this?
 Create `./data/` from your sketch directory.  
 The content of `./data/` will be flashed when you use the upload tool from `tools - ESP32 Sketch Data Upload`.  
+_Don't forget to select correct flash size at `Tools - Flash Size`!_  
   
 **TIP:** You can open sketch directory using `Sketch - View Sketch Folder`  
      Shortcut `Ctrl-K` or `Cmd-K` would work.
