@@ -30,3 +30,10 @@ cat > .vscode/c_cpp_properties.json <<EOF
     "version": 4
 }
 EOF
+
+cat > .vscode/settings.json <<EOF
+{
+    "esp8266fs.esptool.executable": "$HOME/Library/Arduino15/packages/esp32/hardware/esp32/$currentVersion/tools/esptool.py",
+    "esp8266fs.espota.py": "$HOME/Library/Arduino15/packages/esp32/hardware/esp32/$currentVersion/tools/espota.py",
+}
+EOF
