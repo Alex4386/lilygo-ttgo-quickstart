@@ -16,7 +16,7 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
    - On macOS, Arduino - Preferences
 2. Go to Additional Board Manager URLs and click popup button
 3. Copy `https://dl.espressif.com/dl/package_esp32_index.json` and paste it to the popup and Click **OK**.
-   - you can right click [https://dl.espressif.com/dl/package_esp32_index.json] and `Copy Link Address` to copy it easily.
+   - you can [right click me](https://dl.espressif.com/dl/package_esp32_index.json) and `Copy Link Address` to copy it easily.
 4. Now head back to `Board Manager`
    - On all platforms, Tools - Board Manager
 5. Type `ESP32` and press enter.
