@@ -19,6 +19,7 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
    - you can [right click me](https://dl.espressif.com/dl/package_esp32_index.json) and `Copy Link Address` to copy it easily.
    - (macOS Big Sur) If you are using macOS Big Sur, Please use the Release Candidate version of Board Definition Files.
      [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json)
+   - (macOS Big Sur) update `pyserial` if necessary, `pip install -U pyserial && pip3 install -U pyserial`.  
 4. Now head back to `Board Manager`
    - On all platforms, Tools - Board Manager
 5. Type `ESP32` and press enter.
@@ -78,6 +79,9 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 4. Open up Command Palette and type `Arduino: Initialize`
 
 ### Windows
+Since shell of Windows is not powerful as other platforms,  
+You should do it manually. (or someone needs to do `Get-Item-BlahBlah-Microsoft-Stuff`, contributions please! I am not a Powershell guru.)
+
 5. Edit your c_cpp_properties.json by following [related issue](https://github.com/Microsoft/vscode-arduino/issues/678#issuecomment-662230997)
    1. Set C/C++ Language Server use Arduino GCC
    ```json
@@ -102,6 +106,7 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 
 ### macOS
 5. Run `./generate_properties.macOS.sh`.
-6. (Big Sur Only) Update `pyserial` to latest version. [Issue](https://github.com/espressif/esptool/issues/540#issuecomment-741168660)
-   `pip install -U pyserial && pip3 install -U pyserial`
-7. Done!
+
+### Linux
+I think I might create the `./generate_properties.linux.sh` soon.  
+But I don't have a Linux Box at the moment, If anyone can help, I would be grateful.
