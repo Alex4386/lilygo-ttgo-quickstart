@@ -17,6 +17,8 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
 2. Go to Additional Board Manager URLs and click popup button
 3. Copy `https://dl.espressif.com/dl/package_esp32_index.json` and paste it to the popup and Click **OK**.
    - you can [right click me](https://dl.espressif.com/dl/package_esp32_index.json) and `Copy Link Address` to copy it easily.
+   - (macOS Big Sur) If you are using macOS Big Sur, Please use the Release Candidate version of Board Definition Files.
+     [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json)
 4. Now head back to `Board Manager`
    - On all platforms, Tools - Board Manager
 5. Type `ESP32` and press enter.
@@ -102,6 +104,4 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 5. Run `./generate_properties.macOS.sh`.
 6. (Big Sur Only) Update `pyserial` to latest version. [Issue](https://github.com/espressif/esptool/issues/540#issuecomment-741168660)
    `pip install -U pyserial && pip3 install -U pyserial`
-7. (Big Sur Only) If problem persists, Do the following:
-   1. Use the dev channel version of ESP32 Library at [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json).  
-   **MAKE SURE YOU RE-RUN THE `./generate_properties.macOS.sh` AFTER UPDATE.** [Issue](https://github.com/espressif/esptool/issues/540#issuecomment-747185562)
+7. Done!
