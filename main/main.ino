@@ -86,7 +86,7 @@ void longBtnEvent(Button2 &btn) {
   if (btn == leftButton) {
     getCurrentWiFiInfo(&tft);
   } else if (btn == rightButton) {
-    runHttpRequest(&tft, true, GET, "https://meiling-dev.stella-it.com/v1");
+    runHttpRequest(&tft, true, GET, "https://meiling.stella-api.dev/v1");
   }
   idleMode = NONE;
 }
