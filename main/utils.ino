@@ -9,7 +9,7 @@
 void syncClock() {
   configTime(0, 0, "pool.ntp.org", "time.nist.gov");
 
-  Serial.print(F("Waiting for NTP time sync: "));
+  Serial.print("Waiting for NTP time sync: ");
   time_t nowSecs = time(nullptr);
   while (nowSecs < 8 * 3600 * 2) {
     delay(500);
@@ -17,8 +17,10 @@ void syncClock() {
     nowSecs = time(nullptr);
   }
 
-  struct tm timeinfo;
-  gmtime_r(&nowSecs, &timeinfo);
+  Serial.println("Success!");
+  
+  Serial.print("Current Time: ");
+  Serial.println(getCurrentTime());
 }
 
 char *getCurrentTime() {
