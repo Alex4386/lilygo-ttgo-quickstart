@@ -3,8 +3,6 @@
 #include <TJpg_Decoder.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
-#include <WiFiClientSecure.h>
-#include <HTTPClient.h>
 
 #include "SPIFFS.h" // ESP32 only
 #include "screen.hpp"
@@ -49,9 +47,6 @@ void setup() {
 
   printLog(&tft, info, "Connected to "+currentSSID);
   printLog(&tft, info, "IP: "+currentIP);
-
-  WiFiClientSecure *client = new WiFiClientSecure;
-  client->setInsecure();
 
   HttpResponse *response;
   response = sendHttpRequest(GET, "http://icanhazip.com/", "");

@@ -78,35 +78,11 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 3. Install [ESP8266FS Extension](https://marketplace.visualstudio.com/items?itemName=kash4kev.vscode-esp8266fs) from Extensions MarketPlace.  
 4. Open up Command Palette and type `Arduino: Initialize`
 
-### Windows
-Since shell of Windows is not powerful as other platforms,  
-You should do it manually. (or someone needs to do `Get-Item-BlahBlah-Microsoft-Stuff`, contributions please! I am not a Powershell guru.)
+### Windows/macOS
+5. Run `node ./generate_properties.js`.
 
-5. Edit your c_cpp_properties.json by following [related issue](https://github.com/Microsoft/vscode-arduino/issues/678#issuecomment-662230997)
-   1. Set C/C++ Language Server use Arduino GCC
-   ```json
-   {
-      "configurations": [
-         {
-            "compilerPath": "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-gcc.exe",
-            "intelliSenseMode": "gcc-x86",
-            "cStandard": "c11",
-            "cppStandard": "c++11"
-         }
-      ]
-   }
-   ```
-   2. Add this to your workspace settings.json 
-   ```json
-      {
-          "C_Cpp.default.intelliSenseMode": "gcc-x86",
-          "C_Cpp.intelliSenseEngine": "Tag Parser"
-      }
-   ```
-
-### macOS
-5. Run `./generate_properties.macOS.sh`.
+**Known Issue:** VSCode on Windows is currently experiencing issues with importing `avr32/io.h`.  
 
 ### Linux
-I think I might create the `./generate_properties.linux.sh` soon.  
+I think I might create the `./generate_properties.js` for Linux soon.  
 But I don't have a Linux Box at the moment, If anyone can help, I would be grateful.
