@@ -11,8 +11,8 @@
 TFT_eSPI tft;
 WiFiMulti wifiMulti;
 
-String ssid = "SSID";
-String pass = "PASSWORD";
+String ssid = "ssid";
+String pass = "password";
 
 void setup() {
   Serial.begin(115200);

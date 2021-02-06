@@ -52,7 +52,7 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload) {
     WiFiClientSecure *client = new WiFiClientSecure;
 
     // TODO: Implement certstore.
-    client->setInsecure();
+    // client->setInsecure();
     success = http.begin(*client, url);
   } else {
     success = http.begin(url);
