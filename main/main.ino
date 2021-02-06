@@ -4,8 +4,11 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <ArduinoJson.h>
+#include <Button2.h>
 
 #include "SPIFFS.h" // ESP32 only
+
+#include "action.hpp"
 #include "screen.hpp"
 #include "wifi.hpp"
 #include "http.hpp"
@@ -14,8 +17,14 @@
 TFT_eSPI tft;
 WiFiMulti wifiMulti;
 
+Button2 leftButton = Button2(0);
+Button2 rightButton = Button2(35);
+
 // change this to /wifi/wifi.json
 String wifiConfigFile = "/wifi/personal.json";
+
+enum IdleMode { NONE, CLOCK };
+IdleMode idleMode = NONE;
 
 void setup() {
   Serial.begin(115200);
@@ -28,44 +37,22 @@ void setup() {
 
   loadAPsFromFile(&wifiMulti, &SPIFFS, wifiConfigFile, &tft);
 
-  getCurrentWiFiInfo();
-  delay(1000);
-
-  runCommsTest();
-}
-
-void getCurrentWiFiInfo() {
   clearScreenForCLI(&tft);
-
   printLog(&tft, info, "Connecting to WiFi");
   waitForWiFi(&wifiMulti);
 
-  String currentSSID = WiFi.SSID();
-  String currentIP = WiFi.localIP().toString();
+  getCurrentWiFiInfo(&tft, false);
+  delay(1000);
 
-  printLog(&tft, ok, "Connected to "+currentSSID);
-  printLog(&tft, info, "IP: "+currentIP);
-  printLog(&tft, info, "Time: "+getCurrentTime());
+  runCommsTest(&tft);
+
+  leftButton.setClickHandler(shortBtnEvent);
+  rightButton.setClickHandler(shortBtnEvent);
+  leftButton.setLongClickDetectedHandler(longBtnEvent);
+  rightButton.setLongClickDetectedHandler(longBtnEvent);
+  leftButton.setDoubleClickHandler(doubleBtnEvent);
+  rightButton.setDoubleClickHandler(doubleBtnEvent);
 }
-
-void runCommsTest() {
-  clearScreenForCLI(&tft);
-
-  printLog(&tft, info, "Starting Comms Test");
-
-  HttpResponse *response;
-  response = sendHttpRequest(GET, "http://icanhazip.com/", "", true);
-  printHttpResponse(&tft, response);
-  free(response);
-
-  response = sendHttpRequest(GET, "https://meiling.stella-api.dev/", "");
-  printHttpResponse(&tft, response);
-  free(response);
-
-  printLog(&tft, ok, "Comms Test Complete!");
-}
-
-void loop() {}
 
 bool pJpgCallback(
   int16_t x,
@@ -79,3 +66,36 @@ bool pJpgCallback(
   return 1;
 }
 
+void loop() {
+  leftButton.loop();
+  rightButton.loop();
+
+  if (idleMode == CLOCK) {
+    getCurrentTime(&tft, false);
+  }
+}
+
+// ===================================
+
+void shortBtnEvent(Button2 &btn) {
+  getCurrentTime(&tft);
+  idleMode = CLOCK;
+}
+
+void longBtnEvent(Button2 &btn) {
+  if (btn == leftButton) {
+    getCurrentWiFiInfo(&tft);
+  } else if (btn == rightButton) {
+    runHttpRequest(&tft, true, GET, "https://meiling-dev.stella-it.com/v1");
+  }
+  idleMode = NONE;
+}
+
+void doubleBtnEvent(Button2 &btn) {
+  if (btn == leftButton) {
+    getCurrentWiFiInfo(&tft);
+  } else if (btn == rightButton) {
+    runCommsTest(&tft);
+  }
+  idleMode = NONE;
+}

@@ -86,3 +86,9 @@ _Don't forget to select correct flash size at `Tools - Flash Size`!_
 ### Linux
 I think I might create the `./generate_properties.js` for Linux soon.  
 But I don't have a Linux Box at the moment, If anyone can help, I would be grateful.
+
+## Libraries for Setting up
+* Button2
+* ArduinoJson
+* TJpg_Decoder
+* TFT_eSPI

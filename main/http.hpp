@@ -15,4 +15,6 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, boo
 HttpResponse *sendHttpRequest(HttpMethod method, String url);
 void printHttpResponse(TFT_eSPI *tft, HttpResponse *response);
 
+String getMethodString(HttpMethod method);
+
 #endif

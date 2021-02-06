@@ -20,6 +20,7 @@ void clearScreenForCLI(TFT_eSPI *tft) {
   tft->fillScreen(TFT_BLACK);
   tft->setTextColor(TFT_WHITE);
 
+  tft->setTextSize(1);
   tft->setCursor(0, 0, 1);
 }
 

@@ -5,11 +5,28 @@
 #include "http.hpp"
 #include "screen.hpp"
 
+String getMethodString(HttpMethod method) {
+  switch (method) {
+    case GET:
+      return "GET";
+      break;
+    case POST:
+      return "POST";
+      break;
+    case PATCH:
+      return "PATCH";
+      break;
+    case PUT:
+      return "PUT";
+      break;
+  }
+}
+
 HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, bool trimResult) {
   HTTPClient http;
 
   bool success = false;
-  String methodString;
+  String methodString = getMethodString(method);
   
   if (url.startsWith("https")) {
     WiFiClientSecure *client = new WiFiClientSecure;
@@ -37,19 +54,15 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, boo
     switch (method) {
       case GET:
         httpCode = http.GET();
-        methodString = "GET";
         break;
       case POST:
         httpCode = http.POST(payload);
-        methodString = "POST";
         break;
       case PATCH:
         httpCode = http.PATCH(payload);
-        methodString = "PATCH";
         break;
       case PUT:
         httpCode = http.PUT(payload);
-        methodString = "PUT";
         break;
     }
 
