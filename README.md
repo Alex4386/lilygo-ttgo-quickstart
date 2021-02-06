@@ -17,7 +17,7 @@ In order to use TTGO Board (which is based on Espressif ESP32), you need to inst
 2. Go to Additional Board Manager URLs and click popup button
 3. Copy `https://dl.espressif.com/dl/package_esp32_index.json` and paste it to the popup and Click **OK**.
    - you can [right click me](https://dl.espressif.com/dl/package_esp32_index.json) and `Copy Link Address` to copy it easily.
-   - (macOS Big Sur) If you are using macOS Big Sur, Please use the Release Candidate version of Board Definition Files.
+   - (macOS Big Sur / HTTPS without CA) If you are using macOS Big Sur or If you want to use HTTPS without CA Certificate, Please use the Release Candidate version of Board Definition Files.
      [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json)
    - (macOS Big Sur) update `pyserial` if necessary, `pip install -U pyserial && pip3 install -U pyserial`.  
 4. Now head back to `Board Manager`
