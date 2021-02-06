@@ -47,6 +47,7 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload) {
   HTTPClient http;
 
   bool success = false;
+  String method;
   
   if (url.startsWith("https")) {
     WiFiClientSecure *client = new WiFiClientSecure;
@@ -67,15 +68,20 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload) {
     switch (method) {
       case GET:
         httpCode = http.GET();
+        method = "GET";
       case POST:
         httpCode = http.POST(payload);
+        method = "POST";
       case PATCH:
         httpCode = http.PATCH(payload);
+        method = "PATCH";
       case PUT:
         httpCode = http.PUT(payload);
+        method = "PUT";
     }
 
-
+    Serial.print(method);
+    Serial.print(" ");
     Serial.println(url);
     Serial.println("Request retrieve Success.");
 
@@ -83,8 +89,12 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload) {
     response->code = httpCode;
     response->response = http.getString();
 
+    Serial.print("Code :");
     Serial.println(response->code);
+
+    Serial.println("Response:");
     Serial.println(response->response);
+    Serial.println();
 
     http.end();
 
