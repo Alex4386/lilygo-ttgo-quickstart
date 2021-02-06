@@ -8,14 +8,18 @@ int getRotation(int degrees) {
 
 void initScreenForCLI(TFT_eSPI *tft, int degrees) {
   tft->init();
-  tft->fillScreen(TFT_BLACK);
   tft->setRotation(getRotation(degrees));
-  tft->setTextColor(TFT_WHITE);
-
-  tft->setCursor(0, 0, 1);
+  clearScreenForCLI(tft);
 
   TJpgDec.setJpgScale(1);
   TJpgDec.setSwapBytes(true);
+}
+
+void clearScreenForCLI(TFT_eSPI *tft) {
+  tft->fillScreen(TFT_BLACK);
+  tft->setTextColor(TFT_WHITE);
+
+  tft->setCursor(0, 0, 1);
 }
 
 void logScreen(TFT_eSPI *tft, LogLevel level, const char *str) {
@@ -82,4 +86,5 @@ void showSplash() {
     
     TJpgDec.drawJpg(0, 0, fileName);
   }
+  delay(500);
 }

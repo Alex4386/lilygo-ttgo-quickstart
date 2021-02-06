@@ -16,6 +16,7 @@ String pass = "password";
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("Initializing...");
   TJpgDec.setCallback(tJpgTFTHandler);
 
   initScreenForCLI(&tft, 90);
@@ -40,6 +41,7 @@ void setup() {
   syncClock();
 
   String currentTime = String(getCurrentTime());
+  currentTime.trim();
   printLog(&tft, info, "Time: "+currentTime);
 
   String currentSSID = WiFi.SSID();
@@ -50,12 +52,16 @@ void setup() {
 
   HttpResponse *response;
   response = sendHttpRequest(GET, "http://icanhazip.com/", "");
+  response->response.trim();
   printLog(&tft, info, response->response);
   free(response);
 
   response = sendHttpRequest(GET, "https://meiling.stella-api.dev/", "");
   printLog(&tft, info, response->response);
   free(response);
+
+  printLog(&tft, ok, "Comms Test Complete!");
+  delay(1000);
 }
 
 bool tJpgTFTHandler(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) {
@@ -64,4 +70,22 @@ bool tJpgTFTHandler(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitm
   return 1;
 }
 
-void loop() {}
+void loop() {
+  showSplash();
+  clearScreenForCLI(&tft);
+  printLog(&tft, info, "Test");
+  delay(100);
+
+  printLog(&tft, ok, "Test");
+  delay(100);
+  
+  printLog(&tft, warn, "Test");
+  delay(100);
+
+  printLog(&tft, error, "Test");
+  delay(100);
+
+  tft.println();
+  printLog(&tft, info, "Now Waiting for 1000ms.");
+  delay(1000);
+}

@@ -5,6 +5,7 @@ enum LogLevel {info, ok, warn, error, none};
 
 int getRotation(int degrees);
 void initScreenForCLI(TFT_eSPI *tft, int degrees);
+void clearScreenForCLI(TFT_eSPI *tft);
 void logScreen(TFT_eSPI *tft, LogLevel level, const char *str);
 void printLog(TFT_eSPI *tft, LogLevel level, String str);
 void printStellaIT(TFT_eSPI *tft);
