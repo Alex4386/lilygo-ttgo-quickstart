@@ -28,6 +28,15 @@ void setup() {
 
   loadAPsFromFile(&wifiMulti, &SPIFFS, wifiConfigFile, &tft);
 
+  getCurrentWiFiInfo();
+  delay(1000);
+
+  runCommsTest();
+}
+
+void getCurrentWiFiInfo() {
+  clearScreenForCLI(&tft);
+
   printLog(&tft, info, "Connecting to WiFi");
   waitForWiFi(&wifiMulti);
 
@@ -37,14 +46,11 @@ void setup() {
   printLog(&tft, ok, "Connected to "+currentSSID);
   printLog(&tft, info, "IP: "+currentIP);
   printLog(&tft, info, "Time: "+getCurrentTime());
-
-  delay(1000);
-  clearScreenForCLI(&tft);
-
-  runCommsTest();
 }
 
 void runCommsTest() {
+  clearScreenForCLI(&tft);
+
   printLog(&tft, info, "Starting Comms Test");
 
   HttpResponse *response;
