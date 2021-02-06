@@ -100,30 +100,49 @@ fs.writeFileSync(
             {
                 name: os.platform(),
                 includePath: [
+                    // arduino application library
+                    path.join(
+                        arduinoInstall,
+                        "libraries"
+                    )+path.sep+"**",
+
+                    // workspace library
                     path.join(
                         arduinoWorkspace,
                         "libraries"
                     )+path.sep+"**",
+
+                    // ArduinoJson
+                    path.join(
+                        arduinoWorkspace,
+                        "libraries",
+                        "ArduinoJson"
+                    )+path.sep+"**",
+
+                    //TJpgDecoder
                     path.join(
                         arduinoWorkspace,
                         "libraries",
                         "TJpg_Decoder"
                     )+path.sep+"**",
-                    /*
-                    path.join(
-                        arduinoInstall,
-                        "libraries"
-                    )+path.sep+"**",
-                    */
+
+                    // ESP32 Specifics
                     path.join(
                         arduinoUserDir,
                         "packages/esp32/tools"
                     )+path.sep+"**",
+
+                    // ESP32 Libraries
                     path.join(
                         esp32Path,
                         sdkVersion
                     )+path.sep+"**",
-                    "${workspaceFolder}"+path.sep+"**",
+
+                    // current directory
+                    path.join(
+                        "${workspaceFolder}",
+                        "main"
+                    )+path.sep+"**",
                 ],
                 forcedInclude: [],
                 defines: [
