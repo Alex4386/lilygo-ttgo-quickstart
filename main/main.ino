@@ -3,89 +3,73 @@
 #include <TJpg_Decoder.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include <ArduinoJson.h>
 
 #include "SPIFFS.h" // ESP32 only
 #include "screen.hpp"
+#include "wifi.hpp"
+#include "http.hpp"
 #include "utils.hpp"
 
 TFT_eSPI tft;
 WiFiMulti wifiMulti;
 
-String ssid = "ssid";
-String pass = "password";
+// change this to /wifi/wifi.json
+String wifiConfigFile = "/wifi/personal.json";
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Initializing...");
-  TJpgDec.setCallback(tJpgTFTHandler);
+  SPIFFS.begin();
 
   initScreenForCLI(&tft, 90);
 
-  SPIFFS.begin();
-  fs::File root = SPIFFS.open("/");
+  showSplash(SPIFFS, pJpgCallback);
+  clearScreenForCLI(&tft);
 
-	showSplash();
-  delay(500);
+  loadAPsFromFile(&wifiMulti, &SPIFFS, wifiConfigFile, &tft);
 
-  tft.fillScreen(TFT_BLACK);
-
-  wifiMulti.addAP(
-    ssid.c_str(),
-    pass.c_str()
-  );
-
-  printLog(&tft, info, "Trying to connect: "+ssid);
-  while (wifiMulti.run() != WL_CONNECTED) {}
-
-  printLog(&tft, info, "Synchronizing Clock");
-  syncClock();
-
-  String currentTime = String(getCurrentTime());
-  currentTime.trim();
-  printLog(&tft, info, "Time: "+currentTime);
+  printLog(&tft, info, "Connecting to WiFi");
+  waitForWiFi(&wifiMulti);
 
   String currentSSID = WiFi.SSID();
   String currentIP = WiFi.localIP().toString();
 
-  printLog(&tft, info, "Connected to "+currentSSID);
+  printLog(&tft, ok, "Connected to "+currentSSID);
   printLog(&tft, info, "IP: "+currentIP);
+  printLog(&tft, info, "Time: "+getCurrentTime());
+
+  delay(1000);
+  clearScreenForCLI(&tft);
+
+  runCommsTest();
+}
+
+void runCommsTest() {
+  printLog(&tft, info, "Starting Comms Test");
 
   HttpResponse *response;
-  response = sendHttpRequest(GET, "http://icanhazip.com/", "");
-  response->response.trim();
-  printLog(&tft, info, response->response);
+  response = sendHttpRequest(GET, "http://icanhazip.com/", "", true);
+  printHttpResponse(&tft, response);
   free(response);
 
   response = sendHttpRequest(GET, "https://meiling.stella-api.dev/", "");
-  printLog(&tft, info, response->response);
+  printHttpResponse(&tft, response);
   free(response);
 
   printLog(&tft, ok, "Comms Test Complete!");
-  delay(1000);
 }
 
-bool tJpgTFTHandler(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap) {
+void loop() {}
+
+bool pJpgCallback(
+  int16_t x,
+  int16_t y,
+  uint16_t w,
+  uint16_t h,
+  uint16_t* bitmap
+) {
   if (y >= tft.height()) return 0;
   tft.pushImage(x, y, w, h, bitmap);
   return 1;
 }
 
-void loop() {
-  showSplash();
-  clearScreenForCLI(&tft);
-  printLog(&tft, info, "Test");
-  delay(100);
-
-  printLog(&tft, ok, "Test");
-  delay(100);
-  
-  printLog(&tft, warn, "Test");
-  delay(100);
-
-  printLog(&tft, error, "Test");
-  delay(100);
-
-  tft.println();
-  printLog(&tft, info, "Now Waiting for 1000ms.");
-  delay(1000);
-}

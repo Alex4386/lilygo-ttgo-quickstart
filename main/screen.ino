@@ -1,3 +1,4 @@
+#include <FS.h>
 #include <TFT_eSPI.h>
 #include <TJpg_Decoder.h>
 #include "screen.hpp"
@@ -22,7 +23,7 @@ void clearScreenForCLI(TFT_eSPI *tft) {
   tft->setCursor(0, 0, 1);
 }
 
-void logScreen(TFT_eSPI *tft, LogLevel level, const char *str) {
+void printLog(TFT_eSPI *tft, LogLevel level, const char *str) {
   uint16_t color = TFT_WHITE;
   char *head = "";
 
@@ -45,15 +46,21 @@ void logScreen(TFT_eSPI *tft, LogLevel level, const char *str) {
       break;
   }
 
-  tft->setTextColor(color);
-  tft->print(head);
-  tft->setTextColor(TFT_WHITE);
-  tft->print(" ");
-  tft->println(str);
+  if (tft != nullptr) {
+    tft->setTextColor(color);
+    tft->print(head);
+    tft->setTextColor(TFT_WHITE);
+    tft->print(" ");
+    tft->println(str);
+  }
+
+  Serial.print(head);
+  Serial.print(" ");
+  Serial.println(str);
 }
 
 void printLog(TFT_eSPI *tft, LogLevel level, String str) {
-  logScreen(tft, level, str.c_str());
+  printLog(tft, level, str.c_str());
 }
 
 void printStellaIT(TFT_eSPI *tft) {
@@ -79,12 +86,25 @@ void printStellaITInc(TFT_eSPI *tft) {
   tft->print("nc.");
 }
 
-void showSplash() {
-  for (int i = 1; i <= 17; i++) {
-    char fileName[30] = {0,};
-    sprintf(fileName, "/splash/frame_%05d.jpg", i);
-    
-    TJpgDec.drawJpg(0, 0, fileName);
+void showSplash(fs::FS fs, SketchCallback callback) {
+  bool splashStarted = false;
+  int frame = 0;
+
+  TJpgDec.setCallback(callback);
+
+  while (true) {
+    char fileName[40] = {0,};
+    sprintf(fileName, "/splash/frame_%05d.jpg", frame);
+
+    if (fs.exists(fileName)) {
+      splashStarted = true;
+      TJpgDec.drawJpg(0, 0, fileName);
+    } else {
+      if (splashStarted) {
+        break;
+      }
+    }
+
+    frame++;
   }
-  delay(500);
 }

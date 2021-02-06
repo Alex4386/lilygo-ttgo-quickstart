@@ -2,17 +2,7 @@
 
 #define _UTILS_HPP
 
-enum HttpMethod { GET, POST, PATCH, PUT };
+String getCurrentTime();
 
-struct HttpResponse {
-  int code;
-  String response;
-};
-
-void syncClock();
-char *getCurrentTime();
-
-HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload);
-HttpResponse *sendHttpRequest(HttpMethod method, String url);
 
 #endif
