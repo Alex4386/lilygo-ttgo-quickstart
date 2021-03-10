@@ -13,6 +13,7 @@
 #include "wifi.hpp"
 #include "http.hpp"
 #include "utils.hpp"
+#include "meiling.hpp"
 
 TFT_eSPI tft;
 WiFiMulti wifiMulti;
@@ -42,16 +43,66 @@ void setup() {
   waitForWiFi(&wifiMulti);
 
   getCurrentWiFiInfo(&tft, false);
+
+  delay(1000);
+  clearScreenForCLI(&tft);
+
+  MeilingDeviceCodeResult *res = loadMeilingTokens(&SPIFFS);
+
+  if (res == nullptr) {
+    Serial.println("Reauth required. Triggering abort()");
+
+    MeilingDeviceCodeRequestResponse *codeReq = runMeilingDevice(&SPIFFS, &tft, false);
+    clearScreenForCLI(&tft);
+  
+    while (res == nullptr) {
+      clearScreenForCLI(&tft);
+      
+      tft.println();
+      tft.setTextFont(2);
+      tft.setTextSize(2);
+    
+      tft.print(*codeReq->user_code);
+      tft.println();
+    
+      tft.setTextSize(1);
+      tft.setTextFont(1);
+      tft.println(*codeReq->verification_url);
+      delay((codeReq->interval) * 1000);
+
+      tft.println("Polling");
+      res = pollServer(&SPIFFS, &tft, codeReq, false);
+    }
+  } else {
+    Serial.println("Previous session was found.");
+
+    if (isAccessTokenExpired(res)) {
+      bool updateResult = updateMeilingTokens(&SPIFFS, &tft, res, false);
+      if (!updateResult) {
+        Serial.println("Reauth required. Triggering abort()");
+        deleteMeilingTokens(&SPIFFS);
+        throw "Reauth Required";
+      }
+    }
+  }
+
+  saveMeilingTokens(&SPIFFS, res);
+  clearScreenForCLI(&tft);
+
+  printLog(&tft, info, "Access Token: "+(*res->access_token));
+  printLog(&tft, info, "Refresh Token: "+(*res->refresh_token));
+
   delay(1000);
 
-  runCommsTest(&tft);
+  HttpResponse *consoleRes = sendMeilingAPIRequest(
+    res,
+    GET,
+    "https://meiling.stella-api.dev/v1/oauth2/userinfo",
+    "", "", false
+  );
 
-  leftButton.setClickHandler(shortBtnEvent);
-  rightButton.setClickHandler(shortBtnEvent);
-  leftButton.setLongClickDetectedHandler(longBtnEvent);
-  rightButton.setLongClickDetectedHandler(longBtnEvent);
-  leftButton.setDoubleClickHandler(doubleBtnEvent);
-  rightButton.setDoubleClickHandler(doubleBtnEvent);
+  printHttpResponse(&tft, consoleRes);
+
 }
 
 bool pJpgCallback(
@@ -70,32 +121,4 @@ void loop() {
   leftButton.loop();
   rightButton.loop();
 
-  if (idleMode == CLOCK) {
-    getCurrentTime(&tft, false);
-  }
-}
-
-// ===================================
-
-void shortBtnEvent(Button2 &btn) {
-  getCurrentTime(&tft);
-  idleMode = CLOCK;
-}
-
-void longBtnEvent(Button2 &btn) {
-  if (btn == leftButton) {
-    getCurrentWiFiInfo(&tft);
-  } else if (btn == rightButton) {
-    runHttpRequest(&tft, true, GET, "https://meiling.stella-api.dev/v1");
-  }
-  idleMode = NONE;
-}
-
-void doubleBtnEvent(Button2 &btn) {
-  if (btn == leftButton) {
-    getCurrentWiFiInfo(&tft);
-  } else if (btn == rightButton) {
-    runCommsTest(&tft);
-  }
-  idleMode = NONE;
 }

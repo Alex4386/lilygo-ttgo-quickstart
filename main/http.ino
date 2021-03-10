@@ -22,7 +22,17 @@ String getMethodString(HttpMethod method) {
   }
 }
 
-HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, bool trimResult) {
+void printHttpResponse(TFT_eSPI *tft, HttpResponse *response) {
+  if (!response) {
+    printLog(tft, error, "Failed Request");
+    return;
+  }
+
+  LogLevel level = (100 <= response->code && response->code < 300) ? ok : error;
+  printLog(tft, level, response->response);
+}
+
+HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, String contentType, bool trimResult) {
   HTTPClient http;
 
   bool success = false;
@@ -44,9 +54,7 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, boo
   DynamicJsonDocument doc(1024);
   deserializeJson(doc, payload);
 
-  if (!doc.isNull()) {
-    http.addHeader("Content-Type", "application/json");
-  }
+  http.addHeader("Content-Type", contentType);
 
   if (success) {
     int httpCode;
@@ -83,14 +91,4 @@ HttpResponse *sendHttpRequest(HttpMethod method, String url, String payload, boo
 
 HttpResponse *sendHttpRequest(HttpMethod method, String url) {
   return sendHttpRequest(method, url.c_str(), "");
-}
-
-void printHttpResponse(TFT_eSPI *tft, HttpResponse *response) {
-  if (!response) {
-    printLog(tft, error, "Failed Request");
-    return;
-  }
-
-  LogLevel level = (100 <= response->code && response->code < 300) ? ok : error;
-  printLog(tft, level, response->response);
 }

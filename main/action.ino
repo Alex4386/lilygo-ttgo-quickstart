@@ -43,7 +43,7 @@ void runHttpRequest(TFT_eSPI *tft, bool clear, HttpMethod method, String url, St
   printLog(tft, info, getMethodString(method)+" "+url);
 
   HttpResponse *response;
-  response = sendHttpRequest(method, url, payload, trimResult);
+  response = sendHttpRequest(method, url, payload, "application/json", trimResult);
   printHttpResponse(tft, response);
   free(response);
 }
